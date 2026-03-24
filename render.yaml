@@ -5,22 +5,8 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
-    disk:
-      name: data-disk
-      mountPath: /data
-      sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.0
-
-  - type: cron
-    name: konbini-scraper
-    runtime: python
-    plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: python scraper/scrape.py
-    schedule: "0 0 * * 1"
-    disk:
-      name: data-disk
-      mountPath: /data
-      sizeGB: 1
+      - key: SCRAPE_TOKEN
+        generateValue: true
