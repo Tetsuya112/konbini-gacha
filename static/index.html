@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コンビニ飯ガチャ</title>
+<style>
+  :root {
+    --bg:#f5f4f0;--surface:#fff;--border:rgba(0,0,0,.1);--border-s:rgba(0,0,0,.2);
+    --text:#1a1a1a;--muted:#888;--accent:#1a1a1a;
+    --seven:#007b3b;--lawson:#0052a0;--famima:#006ab7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;min-height:100vh;}
+  header{padding:1.5rem 1rem 1rem;text-align:center;}
+  header h1{font-size:22px;font-weight:700;letter-spacing:-.02em;}
+  .subtitle{font-size:12px;color:var(--muted);margin-top:4px;}
+  .badge{display:inline-block;margin-top:8px;font-size:11px;padding:3px 10px;border-radius:20px;}
+  .badge.ok{background:#e8f5ec;color:#2e7d32;}
+  .badge.ng{background:#fce8e8;color:#b71c1c;}
+  .container{max-width:480px;margin:0 auto;padding:0 1rem 2rem;}
+  .label{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+  .store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem;}
+  .store-btn{border:1.5px solid var(--border-s);border-radius:12px;padding:12px 6px 10px;cursor:pointer;background:var(--surface);text-align:center;transition:all .15s;user-select:none;}
+  .store-btn:hover{background:#f0f0f0;}
+  .dot{width:10px;height:10px;border-radius:50%;margin:0 auto 6px;}
+  .store-btn .name{font-size:12px;font-weight:600;}
+  [data-store=seven] .dot{background:var(--seven);}
+  [data-store=lawson] .dot{background:var(--lawson);}
+  [data-store=famima] .dot{background:var(--famima);}
+  [data-store=seven].active{border-color:var(--seven);background:#e8f5ec;}
+  [data-store=lawson].active{border-color:var(--lawson);background:#e6f0fb;}
+  [data-store=famima].active{border-color:var(--famima);background:#e6f0fb;}
+  .budget-wrap{background:var(--surface);border-radius:12px;border:1px solid var(--border);padding:1rem;margin-bottom:1rem;}
+  .budget-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .budget-sym{font-size:18px;font-weight:700;color:var(--muted);}
+  #budget{font-size:28px;font-weight:700;border:none;outline:none;background:transparent;width:120px;color:var(--text);}
+  #budget::-webkit-inner-spin-button{display:none;}
+  .budget-unit{font-size:14px;color:var(--muted);}
+  .presets{display:flex;gap:6px;flex-wrap:wrap;}
+  .preset-btn{border:1px solid var(--border-s);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--text);transition:all .12s;}
+  .preset-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .cat-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem;}
+  .cat-btn{border:1px solid var(--border-s);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text);transition:all .12s;}
+  .cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .gacha-btn{width:100%;padding:16px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .15s,transform .1s;margin-bottom:1.25rem;}
+  .gacha-btn:hover{opacity:.85;}
+  .gacha-btn:active{transform:scale(.98);}
+  .gacha-btn:disabled{opacity:.35;cursor:not-allowed;}
+  .result-box{background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;}
+  .result-ph{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:13px;}
+  .result-item{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);animation:fadeUp .25s ease both;}
+  .result-item:last-of-type{border-bottom:none;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .cat-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+  .cat-tag.onigiri{background:#e8f5e9;color:#2e7d32;}
+  .cat-tag.bento{background:#fff3e0;color:#e65100;}
+  .cat-tag.sandwich,.cat-tag.bread{background:#fce4ec;color:#c62828;}
+  .cat-tag.sweets{background:#f3e5f5;color:#6a1b9a;}
+  .cat-tag.salad{background:#e8f5e9;color:#1b5e20;}
+  .cat-tag.souzai{background:#e3f2fd;color:#0d47a1;}
+  .cat-tag.snack{background:#fff8e1;color:#f57f17;}
+  .item-name{font-size:13px;flex:1;line-height:1.4;}
+  .item-price{font-size:15px;font-weight:700;white-space:nowrap;}
+  .result-total{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fafafa;border-top:1.5px solid var(--border-s);}
+  .total-l{font-size:12px;color:var(--muted);}
+  .total-r{font-size:20px;font-weight:700;}
+  .rem{display:inline-block;margin-left:8px;font-size:11px;font-weight:600;padding:2px 10px;border-radius:10px;}
+  .rem.ok{background:#e8f5e9;color:#2e7d32;}
+  .rem.zero{background:#e8f5e9;color:#1b5e20;}
+  .rem.over{background:#fce8e8;color:#b71c1c;}
+  .empty{padding:2rem;text-align:center;color:var(--muted);font-size:13px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎰 コンビニ飯ガチャ</h1>
+  <div class="subtitle">予算内でランダムに選んでくれる</div>
+  <div id="status" class="badge ng">データ読み込み中...</div>
+</header>
+<div class="container">
+  <div class="label">コンビニ</div>
+  <div class="store-grid" id="store-grid">
+    <button class="store-btn active" data-store="seven"><div class="dot"></div><div class="name">セブン</div></button>
+    <button class="store-btn" data-store="lawson"><div class="dot"></div><div class="name">ローソン</div></button>
+    <button class="store-btn" data-store="famima"><div class="dot"></div><div class="name">ファミマ</div></button>
+  </div>
+  <div class="label">予算</div>
+  <div class="budget-wrap">
+    <div class="budget-row">
+      <span class="budget-sym">¥</span>
+      <input id="budget" type="number" value="800" min="100" max="5000" step="50">
+      <span class="budget-unit">円</span>
+    </div>
+    <div class="presets">
+      <button class="preset-btn" onclick="setBudget(500)">¥500</button>
+      <button class="preset-btn" onclick="setBudget(700)">¥700</button>
+      <button class="preset-btn" onclick="setBudget(800)">¥800</button>
+      <button class="preset-btn" onclick="setBudget(1000)">¥1,000</button>
+      <button class="preset-btn" onclick="setBudget(1500)">¥1,500</button>
+    </div>
+  </div>
+  <div class="label">カテゴリ</div>
+  <div class="cat-grid" id="cat-grid"></div>
+  <button class="gacha-btn" id="gacha-btn" onclick="doGacha()" disabled>データ読み込み中...</button>
+  <div class="result-box" id="result-box"><div class="result-ph">コンビニと予算を設定して「ガチャる！」</div></div>
+</div>
+<script>
+const CAT_LABELS={onigiri:'おにぎり',bento:'お弁当',sandwich:'サンドイッチ',bread:'パン',sweets:'スイーツ',salad:'サラダ',souzai:'惣菜',snack:'お菓子'};
+let allData=null,currentStore='seven',activeCats=new Set();
+
+async function loadData(){
+  try{
+    const res=await fetch('/api/products');
+    if(!res.ok)throw new Error();
+    allData=await res.json();
+    const d=new Date(allData.updated_at);
+    const fmt=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} 更新`;
+    const el=document.getElementById('status');
+    el.textContent=fmt; el.className='badge ok';
+    renderCats();
+    const btn=document.getElementById('gacha-btn');
+    btn.disabled=false; btn.textContent='ガチャる！🎲';
+  }catch{
+    const el=document.getElementById('status');
+    el.textContent='データなし — scraper/scrape.py を実行してください';
+    el.className='badge ng';
+    const btn=document.getElementById('gacha-btn');
+    btn.textContent='データがありません';
+  }
+}
+
+function renderCats(){
+  if(!allData)return;
+  const cats=Object.keys(allData.stores[currentStore].categories);
+  activeCats=new Set(cats.filter(c=>!['sweets','snack'].includes(c)));
+  const grid=document.getElementById('cat-grid');
+  grid.innerHTML='';
+  cats.forEach(id=>{
+    const btn=document.createElement('button');
+    btn.className='cat-btn'+(activeCats.has(id)?' active':'');
+    btn.textContent=CAT_LABELS[id]||id;
+    btn.onclick=()=>{
+      activeCats.has(id)?activeCats.delete(id):activeCats.add(id);
+      btn.classList.toggle('active');
+    };
+    grid.appendChild(btn);
+  });
+}
+
+document.getElementById('store-grid').addEventListener('click',e=>{
+  const btn=e.target.closest('.store-btn');
+  if(!btn)return;
+  document.querySelectorAll('.store-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentStore=btn.dataset.store;
+  renderCats();
+  document.getElementById('result-box').innerHTML='<div class="result-ph">コンビニと予算を設定して「ガチャる！」</div>';
+});
+
+function setBudget(v){document.getElementById('budget').value=v;}
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function doGacha(){
+  if(!allData)return;
+  const budget=parseInt(document.getElementById('budget').value)||800;
+  if(activeCats.size===0){document.getElementById('result-box').innerHTML='<div class="empty">カテゴリを選んでください</div>';return;}
+  let pool=[];
+  for(const id of activeCats){
+    const cat=allData.stores[currentStore].categories[id];
+    if(cat)cat.items.forEach(item=>{if(item.price<=budget)pool.push({...item,catId:id});});
+  }
+  if(pool.length===0){document.getElementById('result-box').innerHTML='<div class="empty">予算内の商品が見つかりません 😢</div>';return;}
+  pool=shuffle(pool);
+  const selected=[];let remaining=budget;
+  for(const item of pool){if(item.price<=remaining){selected.push(item);remaining-=item.price;}if(remaining<80)break;}
+  const total=selected.reduce((s,i)=>s+i.price,0);
+  const rem=budget-total;
+  const rc=rem===0?'zero':rem>0?'ok':'over';
+  let html=selected.map((item,i)=>`
+    <div class="result-item" style="animation-delay:${i*.06}s">
+      <span class="cat-tag ${item.catId}">${CAT_LABELS[item.catId]||item.catId}</span>
+      <span class="item-name">${item.name}</span>
+      <span class="item-price">¥${item.price.toLocaleString()}</span>
+    </div>`).join('');
+  html+=`<div class="result-total"><div class="total-l">合計<span class="rem ${rc}">おつり ¥${rem.toLocaleString()}</span></div><div class="total-r">¥${total.toLocaleString()}</div></div>`;
+  document.getElementById('result-box').innerHTML=html;
+}
+
+loadData();
+</script>
+</body>
+</html>
