@@ -380,7 +380,7 @@ function doGacha() {
     const ip=0.15, ifv=0.25, ic=0.60;
     const ix = ax*ip + bx*ifv + cx*ic;
     const iy = ay*ip + by*ifv + cy*ic;
-    return \`<svg width="200" height="180" viewBox="0 0 200 180" style="flex-shrink:0">
+    return `<svg width="200" height="180" viewBox="0 0 200 180" style="flex-shrink:0">
       <polygon points="\${ax},\${ay} \${bx},\${by} \${cx},\${cy}"
         fill="none" stroke="#ddd" stroke-width="1.5"/>
       <line x1="\${ax}" y1="\${ay}" x2="\${(bx+cx)/2}" y2="\${(by+cy)/2}"
@@ -396,10 +396,10 @@ function doGacha() {
       <text x="\${bx-8}" y="\${by+4}" text-anchor="end" font-size="11" fill="#c62828" font-weight="600">F</text>
       <text x="\${cx+8}" y="\${cy+4}" text-anchor="start" font-size="11" fill="#2e7d32" font-weight="600">C</text>
       <text x="\${px}" y="\${py+18}" text-anchor="middle" font-size="9" fill="#e65100">今回</text>
-    </svg>\`;
+    </svg>`;
   }
 
-  const nutrHtml = hasNutr ? \`
+  const nutrHtml = hasNutr ? `
     <div class="nutr-summary">
       <div class="nutr-summary-title">栄養合計（1食あたりの目安との比較）</div>
       <div class="nutr-kcal-total">
@@ -414,7 +414,7 @@ function doGacha() {
       ].map(r => {
         const pct = Math.min(Math.round(parseFloat(r.val) / r.ref * 100), 150);
         const refPct = 100;
-        return \`<div class="nutr-bar-row">
+        return `<div class="nutr-bar-row">
           <span class="nutr-bar-label nutr-bar-label-\${r.cls}">\${r.label}</span>
           <div class="nutr-bar-wrap">
             <div class="nutr-bar nutr-bar-\${r.cls}" style="width:\${Math.min(pct,100)}%"></div>
@@ -422,7 +422,7 @@ function doGacha() {
           </div>
           <span class="nutr-bar-val">\${r.val}\${r.unit}</span>
           <span class="nutr-bar-ref">目安\${r.ref}\${r.unit}</span>
-        </div>\`;
+        </div>`;
       }).join('')}
       <div class="triangle-wrap">
         \${makePfcTriangle(pPct, fPct, cPct)}
@@ -442,9 +442,9 @@ function doGacha() {
         </div>
       </div>
     </div>
-  \` : '';
+  ` : '';
 
-  html += \`
+  html += `
     <div class="result-total">
       <div class="total-left">
         合計
@@ -452,7 +452,7 @@ function doGacha() {
       </div>
       <div class="total-right">¥\${total.toLocaleString()}</div>
     </div>
-  \`;
+  `;
   html += nutrHtml;
 
   document.getElementById('result-box').innerHTML = html;
