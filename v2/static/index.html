@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コンビニ飯ガチャ</title>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.2);
+    --text: #1a1a1a;
+    --text-muted: #888;
+    --accent: #1a1a1a;
+    --seven-color: #007b3b;
+    --lawson-color: #0052a0;
+    --famima-color: #006ab7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Hiragino Sans', 'Yu Gothic', sans-serif; min-height: 100vh; }
+
+  header { padding: 1.5rem 1rem 1rem; text-align: center; }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  header .subtitle { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .updated-badge { display: inline-block; margin-top: 8px; font-size: 11px; background: #e8f5ec; color: #2e7d32; padding: 3px 10px; border-radius: 20px; }
+  .no-data-badge { display: inline-block; margin-top: 8px; font-size: 11px; background: #fce8e8; color: #b71c1c; padding: 3px 10px; border-radius: 20px; }
+
+  .container { max-width: 480px; margin: 0 auto; padding: 0 1rem 2rem; }
+
+  /* ── ストア選択 ── */
+  .section-label { font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .store-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.5rem; }
+  .store-btn {
+    border: 1.5px solid var(--border-strong); border-radius: 12px;
+    padding: 12px 6px 10px; cursor: pointer; background: var(--surface);
+    text-align: center; transition: all 0.15s; user-select: none;
+  }
+  .store-btn:hover { background: #f0f0f0; }
+  .store-btn .store-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 6px; }
+  .store-btn .store-name { font-size: 12px; font-weight: 600; }
+  .store-btn[data-store="seven"] .store-dot { background: var(--seven-color); }
+  .store-btn[data-store="lawson"] .store-dot { background: var(--lawson-color); }
+  .store-btn[data-store="famima"] .store-dot { background: var(--famima-color); }
+  .store-btn.active[data-store="seven"] { border-color: var(--seven-color); background: #e8f5ec; }
+  .store-btn.active[data-store="lawson"] { border-color: var(--lawson-color); background: #e6f0fb; }
+  .store-btn.active[data-store="famima"] { border-color: var(--famima-color); background: #e6f0fb; }
+
+  /* ── 予算 ── */
+  .budget-wrap { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; }
+  .budget-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .budget-symbol { font-size: 18px; font-weight: 700; color: var(--text-muted); }
+  .budget-input { font-size: 28px; font-weight: 700; border: none; outline: none; background: transparent; width: 120px; color: var(--text); }
+  .budget-input::-webkit-inner-spin-button { display: none; }
+  .budget-unit { font-size: 14px; color: var(--text-muted); }
+  .presets { display: flex; gap: 6px; flex-wrap: wrap; }
+  .preset-btn { border: 1px solid var(--border-strong); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; cursor: pointer; background: transparent; color: var(--text); transition: all 0.12s; }
+  .preset-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── カテゴリ ── */
+  .cat-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+  .cat-btn { border: 1px solid var(--border-strong); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; background: var(--surface); color: var(--text); transition: all 0.12s; }
+  .cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── ガチャボタン ── */
+  .gacha-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; background: var(--accent); color: #fff; font-size: 17px; font-weight: 700; cursor: pointer; letter-spacing: 0.04em; transition: opacity 0.15s, transform 0.1s; margin-bottom: 1.25rem; }
+  .gacha-btn:hover { opacity: 0.85; }
+  .gacha-btn:active { transform: scale(0.98); }
+  .gacha-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* ── 結果 ── */
+  .result-box { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+  .result-placeholder { padding: 2.5rem 1rem; text-align: center; color: var(--text-muted); font-size: 13px; }
+  .result-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); animation: fadeUp 0.25s ease both; }
+  .result-item:last-of-type { border-bottom: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .result-item .cat-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+  .cat-tag.onigiri { background: #e8f5e9; color: #2e7d32; }
+  .cat-tag.bento   { background: #fff3e0; color: #e65100; }
+  .cat-tag.sandwich,.cat-tag.bread { background: #fce4ec; color: #c62828; }
+  .cat-tag.sweets  { background: #f3e5f5; color: #6a1b9a; }
+  .cat-tag.salad   { background: #e8f5e9; color: #1b5e20; }
+  .cat-tag.souzai  { background: #e3f2fd; color: #0d47a1; }
+  .cat-tag.snack   { background: #fff8e1; color: #f57f17; }
+  .item-name { font-size: 13px; line-height: 1.4; }
+  .item-price { font-size: 15px; font-weight: 700; white-space: nowrap; }
+  .item-nutrition { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
+  .nutr-pill { font-size: 10px; padding: 2px 6px; border-radius: 8px; white-space: nowrap; font-weight: 600; }
+  .nutr-kcal { background: #fff3e0; color: #e65100; }
+  .nutr-p    { background: #e3f2fd; color: #0d47a1; }
+  .nutr-f    { background: #fce4ec; color: #c62828; }
+  .nutr-c    { background: #e8f5e9; color: #2e7d32; }
+  .item-nutrition { display: flex; gap: 6px; margin-top: 3px; flex-wrap: wrap; }
+  .nutr-pill { font-size: 10px; padding: 1px 6px; border-radius: 8px; white-space: nowrap; }
+  .nutr-kcal { background: #fff3e0; color: #e65100; font-weight: 700; }
+  .nutr-p    { background: #e3f2fd; color: #0d47a1; }
+  .nutr-f    { background: #fce4ec; color: #c62828; }
+  .nutr-c    { background: #e8f5e9; color: #2e7d32; }
+  .result-total { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border-top: 1.5px solid var(--border-strong); }
+  .total-left { font-size: 12px; color: var(--text-muted); }
+  .total-right { font-size: 20px; font-weight: 700; }
+  .remain-tag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 10px; }
+  .remain-tag.ok   { background: #e8f5e9; color: #2e7d32; }
+  .remain-tag.zero { background: #e8f5e9; color: #1b5e20; }
+  .remain-tag.over { background: #fce8e8; color: #b71c1c; }
+  .empty-msg { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 13px; }
+  .loading { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎰 コンビニ飯ガチャ</h1>
+  <div class="subtitle">予算内でランダムに選んでくれる</div>
+  <div id="data-status" class="updated-badge">データ読み込み中...</div>
+</header>
+
+<div class="container">
+
+  <div class="section-label">コンビニ</div>
+  <div class="store-grid" id="store-grid">
+    <button class="store-btn active" data-store="seven">
+      <div class="store-dot"></div>
+      <div class="store-name">セブン</div>
+    </button>
+    <button class="store-btn" data-store="lawson">
+      <div class="store-dot"></div>
+      <div class="store-name">ローソン</div>
+    </button>
+    <button class="store-btn" data-store="famima">
+      <div class="store-dot"></div>
+      <div class="store-name">ファミマ</div>
+    </button>
+  </div>
+
+  <div class="section-label">予算</div>
+  <div class="budget-wrap">
+    <div class="budget-row">
+      <span class="budget-symbol">¥</span>
+      <input class="budget-input" type="number" id="budget" value="800" min="100" max="5000" step="50">
+      <span class="budget-unit">円</span>
+    </div>
+    <div class="presets">
+      <button class="preset-btn" onclick="setBudget(500)">¥500</button>
+      <button class="preset-btn" onclick="setBudget(700)">¥700</button>
+      <button class="preset-btn" onclick="setBudget(800)">¥800</button>
+      <button class="preset-btn" onclick="setBudget(1000)">¥1,000</button>
+      <button class="preset-btn" onclick="setBudget(1500)">¥1,500</button>
+    </div>
+  </div>
+
+  <div class="section-label">カテゴリ</div>
+  <div class="cat-grid" id="cat-grid"></div>
+
+  <button class="gacha-btn" id="gacha-btn" onclick="doGacha()" disabled>データ読み込み中...</button>
+
+  <div class="result-box" id="result-box">
+    <div class="result-placeholder">コンビニと予算を設定して「ガチャる！」</div>
+  </div>
+
+</div>
+
+<script>
+// ──────────────────────────────────────
+// 状態
+// ──────────────────────────────────────
+let allData = null;
+let currentStore = 'seven';
+let activeCats = new Set();
+
+const CAT_LABELS = {
+  onigiri:  'おにぎり',
+  bento:    'お弁当',
+  sandwich: 'サンドイッチ',
+  bread:    'パン',
+  sweets:   'スイーツ',
+  salad:    'サラダ',
+  souzai:   '惣菜',
+  snack:    'お菓子',
+};
+
+// ──────────────────────────────────────
+// データ読み込み
+// ──────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch('/v2/api/products');
+    if (!res.ok) throw new Error();
+    allData = await res.json();
+
+    const d = new Date(allData.updated_at);
+    const fmt = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} 更新`;
+    document.getElementById('data-status').textContent = fmt;
+    document.getElementById('data-status').className = 'updated-badge';
+
+    renderCatButtons();
+    document.getElementById('gacha-btn').disabled = false;
+    document.getElementById('gacha-btn').textContent = 'ガチャる！🎲';
+  } catch {
+    document.getElementById('data-status').textContent = 'データなし — scrape.py を実行してください';
+    document.getElementById('data-status').className = 'no-data-badge';
+    document.getElementById('gacha-btn').textContent = 'データがありません';
+  }
+}
+
+// ──────────────────────────────────────
+// カテゴリボタン描画
+// ──────────────────────────────────────
+function renderCatButtons() {
+  if (!allData) return;
+  const store = allData.stores[currentStore];
+  const cats = Object.keys(store.categories);
+
+  // デフォルト: 食事系をON（スイーツ・お菓子はOFF）
+  activeCats = new Set(cats.filter(c => !['sweets','snack'].includes(c)));
+
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  cats.forEach(catId => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (activeCats.has(catId) ? ' active' : '');
+    btn.textContent = CAT_LABELS[catId] || catId;
+    btn.dataset.cat = catId;
+    const count = store.categories[catId].items.length;
+    btn.title = `${count}件`;
+    btn.onclick = () => toggleCat(catId, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function toggleCat(catId, btn) {
+  if (activeCats.has(catId)) {
+    activeCats.delete(catId);
+    btn.classList.remove('active');
+  } else {
+    activeCats.add(catId);
+    btn.classList.add('active');
+  }
+}
+
+// ──────────────────────────────────────
+// ストア切り替え
+// ──────────────────────────────────────
+document.getElementById('store-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.store-btn');
+  if (!btn) return;
+  document.querySelectorAll('.store-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentStore = btn.dataset.store;
+  renderCatButtons();
+  document.getElementById('result-box').innerHTML = '<div class="result-placeholder">コンビニと予算を設定して「ガチャる！」</div>';
+});
+
+// ──────────────────────────────────────
+// 予算
+// ──────────────────────────────────────
+function setBudget(v) {
+  document.getElementById('budget').value = v;
+}
+
+// ──────────────────────────────────────
+// ガチャ本体
+// ──────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function doGacha() {
+  if (!allData) return;
+  const budget = parseInt(document.getElementById('budget').value) || 800;
+  const store = allData.stores[currentStore];
+
+  if (activeCats.size === 0) {
+    document.getElementById('result-box').innerHTML = '<div class="empty-msg">カテゴリを1つ以上選んでください</div>';
+    return;
+  }
+
+  // 選択カテゴリの商品を全部プール
+  let pool = [];
+  for (const catId of activeCats) {
+    const cat = store.categories[catId];
+    if (!cat) continue;
+    cat.items.forEach(item => {
+      if (item.price <= budget) pool.push({ ...item, catId });
+    });
+  }
+
+  if (pool.length === 0) {
+    document.getElementById('result-box').innerHTML = '<div class="empty-msg">予算内の商品が見つかりませんでした 😢<br>予算を上げてみてください</div>';
+    return;
+  }
+
+  // グリーディに詰める
+  pool = shuffle(pool);
+  const selected = [];
+  let remaining = budget;
+
+  for (const item of pool) {
+    if (item.price <= remaining) {
+      selected.push(item);
+      remaining -= item.price;
+    }
+    if (remaining < 80) break;
+  }
+
+  const total = selected.reduce((s, i) => s + i.price, 0);
+  const rem = budget - total;
+  const remClass = rem === 0 ? 'zero' : rem > 0 ? 'ok' : 'over';
+
+  let html = selected.map((item, idx) => `
+    <div class="result-item" style="animation-delay:${idx * 0.06}s">
+      <span class="cat-tag ${item.catId}">${CAT_LABELS[item.catId] || item.catId}</span>
+      <div class="item-body" style="flex:1;min-width:0;">
+        <div class="item-name">${item.name}</div>
+        ${item.kcal != null ? `<div class="item-nutrition">
+          <span class="nutr-pill nutr-kcal">${item.kcal}kcal</span>
+          ${item.protein != null ? `<span class="nutr-pill nutr-p">P ${item.protein}g</span>` : ''}
+          ${item.fat != null ? `<span class="nutr-pill nutr-f">F ${item.fat}g</span>` : ''}
+          ${item.carbs != null ? `<span class="nutr-pill nutr-c">C ${item.carbs}g</span>` : ''}
+        </div>` : ''}
+      </div>
+      <span class="item-price">¥${item.price.toLocaleString()}</span>
+    </div>
+  `).join('');
+
+  html += `
+    <div class="result-total">
+      <div class="total-left">
+        合計
+        <span class="remain-tag ${remClass}">おつり ¥${rem.toLocaleString()}</span>
+      </div>
+      <div class="total-right">¥${total.toLocaleString()}</div>
+    </div>
+  `;
+
+  document.getElementById('result-box').innerHTML = html;
+}
+
+// ──────────────────────────────────────
+// 起動
+// ──────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
