@@ -105,6 +105,27 @@
   .remain-tag.over { background: #fce8e8; color: #b71c1c; }
   .empty-msg { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 13px; }
   .loading { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 13px; }
+  .nutr-summary { padding: 14px 16px; background: #fafafa; border-top: 0.5px solid var(--border); }
+  .nutr-summary-title { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.04em; }
+  .nutr-kcal-total { display: flex; align-items: baseline; gap: 4px; margin-bottom: 10px; }
+  .nutr-kcal-num { font-size: 24px; font-weight: 700; color: #e65100; }
+  .nutr-kcal-ref { font-size: 11px; color: var(--text-muted); }
+  .nutr-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .nutr-bar-label { font-size: 11px; width: 14px; font-weight: 700; }
+  .nutr-bar-label-p { color: #1565c0; }
+  .nutr-bar-label-f { color: #c62828; }
+  .nutr-bar-label-c { color: #2e7d32; }
+  .nutr-bar-wrap { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; position: relative; }
+  .nutr-bar { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .nutr-bar-ref-line { position: absolute; top: 0; height: 100%; width: 2px; background: rgba(0,0,0,0.2); border-radius: 2px; }
+  .nutr-bar-p { background: #1565c0; }
+  .nutr-bar-f { background: #c62828; }
+  .nutr-bar-c { background: #2e7d32; }
+  .nutr-bar-val { font-size: 12px; font-weight: 600; min-width: 40px; text-align: right; color: var(--text); }
+  .nutr-bar-ref { font-size: 10px; color: var(--text-muted); min-width: 44px; text-align: right; }
+  .triangle-wrap { margin-top: 12px; padding-top: 12px; border-top: 0.5px solid var(--border); display: flex; align-items: center; gap: 14px; }
+  .triangle-legend { font-size: 10px; color: var(--text-muted); line-height: 1.8; }
+  .triangle-legend span { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 3px; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -328,15 +349,111 @@ function doGacha() {
     </div>
   `).join('');
 
-  html += `
+  // 栄養合計
+  const totalKcal    = selected.reduce((s,i) => s + (i.kcal    || 0), 0);
+  const totalProtein = selected.reduce((s,i) => s + (i.protein || 0), 0);
+  const totalFat     = selected.reduce((s,i) => s + (i.fat     || 0), 0);
+  const totalCarbs   = selected.reduce((s,i) => s + (i.carbs   || 0), 0);
+  const hasNutr = totalKcal > 0;
+
+  // 成人1食あたり目安（2000kcal/日 ÷ 3食）
+  const REF = { kcal: 667, protein: 20, fat: 22, carbs: 90 };
+
+  // PFC比率（カロリーベース）
+  const pCal = totalProtein * 4;
+  const fCal = totalFat     * 9;
+  const cCal = totalCarbs   * 4;
+  const pfcTotal = pCal + fCal + cCal || 1;
+  const pPct = Math.round(pCal / pfcTotal * 100);
+  const fPct = Math.round(fCal / pfcTotal * 100);
+  const cPct = Math.round(cCal / pfcTotal * 100);
+
+  // 三角形SVG（重心座標）
+  function makePfcTriangle(p, f, c) {
+    const total = p + f + c || 1;
+    const pR = p/total, fR = f/total, cR = c/total;
+    // 頂点: P=上, F=左下, C=右下
+    const ax=100, ay=10, bx=20, by=160, cx=180, cy=160;
+    const px = ax*pR + bx*fR + cx*cR;
+    const py = ay*pR + by*fR + cy*cR;
+    // 理想ゾーン（P:15%, F:25%, C:60%）
+    const ip=0.15, ifv=0.25, ic=0.60;
+    const ix = ax*ip + bx*ifv + cx*ic;
+    const iy = ay*ip + by*ifv + cy*ic;
+    return \`<svg width="200" height="180" viewBox="0 0 200 180" style="flex-shrink:0">
+      <polygon points="\${ax},\${ay} \${bx},\${by} \${cx},\${cy}"
+        fill="none" stroke="#ddd" stroke-width="1.5"/>
+      <line x1="\${ax}" y1="\${ay}" x2="\${(bx+cx)/2}" y2="\${(by+cy)/2}"
+        stroke="#f0f0f0" stroke-width="0.8"/>
+      <line x1="\${bx}" y1="\${by}" x2="\${(ax+cx)/2}" y2="\${(ay+cy)/2}"
+        stroke="#f0f0f0" stroke-width="0.8"/>
+      <line x1="\${cx}" y1="\${cy}" x2="\${(ax+bx)/2}" y2="\${(ay+by)/2}"
+        stroke="#f0f0f0" stroke-width="0.8"/>
+      <circle cx="\${ix}" cy="\${iy}" r="10"
+        fill="rgba(100,180,100,0.15)" stroke="rgba(100,180,100,0.5)" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="\${px}" cy="\${py}" r="7" fill="#e65100" opacity="0.9"/>
+      <text x="\${ax}" y="\${ay-6}" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="600">P</text>
+      <text x="\${bx-8}" y="\${by+4}" text-anchor="end" font-size="11" fill="#c62828" font-weight="600">F</text>
+      <text x="\${cx+8}" y="\${cy+4}" text-anchor="start" font-size="11" fill="#2e7d32" font-weight="600">C</text>
+      <text x="\${px}" y="\${py+18}" text-anchor="middle" font-size="9" fill="#e65100">今回</text>
+    </svg>\`;
+  }
+
+  const nutrHtml = hasNutr ? \`
+    <div class="nutr-summary">
+      <div class="nutr-summary-title">栄養合計（1食あたりの目安との比較）</div>
+      <div class="nutr-kcal-total">
+        <span class="nutr-kcal-num">\${Math.round(totalKcal)}</span>
+        <span style="font-size:13px;color:var(--text-muted)">kcal</span>
+        <span class="nutr-kcal-ref">/ 目安 \${REF.kcal}kcal</span>
+      </div>
+      \${[
+        {label:'P', cls:'p', val:totalProtein.toFixed(1), ref:REF.protein, unit:'g', color:'#1565c0'},
+        {label:'F', cls:'f', val:totalFat.toFixed(1),     ref:REF.fat,     unit:'g', color:'#c62828'},
+        {label:'C', cls:'c', val:totalCarbs.toFixed(1),   ref:REF.carbs,   unit:'g', color:'#2e7d32'},
+      ].map(r => {
+        const pct = Math.min(Math.round(parseFloat(r.val) / r.ref * 100), 150);
+        const refPct = 100;
+        return \`<div class="nutr-bar-row">
+          <span class="nutr-bar-label nutr-bar-label-\${r.cls}">\${r.label}</span>
+          <div class="nutr-bar-wrap">
+            <div class="nutr-bar nutr-bar-\${r.cls}" style="width:\${Math.min(pct,100)}%"></div>
+            <div class="nutr-bar-ref-line" style="left:66.6%"></div>
+          </div>
+          <span class="nutr-bar-val">\${r.val}\${r.unit}</span>
+          <span class="nutr-bar-ref">目安\${r.ref}\${r.unit}</span>
+        </div>\`;
+      }).join('')}
+      <div class="triangle-wrap">
+        \${makePfcTriangle(pPct, fPct, cPct)}
+        <div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:6px">PFCバランス</div>
+          <div style="font-size:11px;color:var(--text-muted);line-height:2">
+            <span style="color:#1565c0;font-weight:600">P</span> \${pPct}%　
+            <span style="color:#c62828;font-weight:600">F</span> \${fPct}%　
+            <span style="color:#2e7d32;font-weight:600">C</span> \${cPct}%
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:6px;line-height:1.6">
+            理想目安<br>P 13〜20%<br>F 20〜30%<br>C 50〜65%
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:6px;opacity:0.7">
+            ※目安は成人1食あたり
+          </div>
+        </div>
+      </div>
+    </div>
+  \` : '';
+
+  html += \`
     <div class="result-total">
       <div class="total-left">
         合計
-        <span class="remain-tag ${remClass}">おつり ¥${rem.toLocaleString()}</span>
+        <span class="remain-tag \${remClass}">おつり ¥\${rem.toLocaleString()}</span>
       </div>
-      <div class="total-right">¥${total.toLocaleString()}</div>
+      <div class="total-right">¥\${total.toLocaleString()}</div>
     </div>
-  `;
+  \`;
+  html += nutrHtml;
 
   document.getElementById('result-box').innerHTML = html;
 }
