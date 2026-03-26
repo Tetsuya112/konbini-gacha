@@ -9,6 +9,7 @@
     --bg:#f5f4f0;--surface:#fff;--border:rgba(0,0,0,.1);--border-s:rgba(0,0,0,.2);
     --text:#1a1a1a;--muted:#888;--accent:#1a1a1a;
     --seven:#007b3b;--lawson:#0052a0;--famima:#006ab7;
+    --col-p:#2979ff;--col-f:#e53935;--col-c:#43a047;--col-k:#ff6f00;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;min-height:100vh;}
@@ -63,11 +64,11 @@
   .item-body{flex:1;min-width:0;}
   .item-name{font-size:13px;line-height:1.4;}
   .item-nutrition{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
-  .nutr-pill{font-size:10px;padding:2px 6px;border-radius:8px;white-space:nowrap;font-weight:600;}
-  .nutr-kcal{background:#fff3e0;color:#e65100;}
-  .nutr-p{background:#e3f2fd;color:#0d47a1;}
-  .nutr-f{background:#fce4ec;color:#c62828;}
-  .nutr-c{background:#e8f5e9;color:#2e7d32;}
+  .npill{font-size:10px;padding:2px 6px;border-radius:8px;white-space:nowrap;font-weight:600;}
+  .npill-k{background:#fff3e0;color:#e65100;}
+  .npill-p{background:#e3f2fd;color:#0d47a1;}
+  .npill-f{background:#fce4ec;color:#c62828;}
+  .npill-c{background:#e8f5e9;color:#2e7d32;}
   .item-price{font-size:15px;font-weight:700;white-space:nowrap;flex-shrink:0;}
   .result-total{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fafafa;border-top:1.5px solid var(--border-s);}
   .total-l{font-size:12px;color:var(--muted);}
@@ -76,30 +77,56 @@
   .rem.ok{background:#e8f5e9;color:#2e7d32;}
   .rem.zero{background:#e8f5e9;color:#1b5e20;}
   .rem.over{background:#fce8e8;color:#b71c1c;}
-  .nutr-summary{padding:14px 16px;background:#fafafa;border-top:0.5px solid var(--border);}
-  .nutr-summary-title{font-size:11px;color:var(--muted);margin-bottom:10px;letter-spacing:0.04em;}
-  .nutr-kcal-total{display:flex;align-items:baseline;gap:4px;margin-bottom:10px;}
-  .nutr-kcal-num{font-size:24px;font-weight:700;color:#e65100;}
-  .nutr-kcal-ref{font-size:11px;color:var(--muted);}
-  .nutr-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-  .nutr-bar-lbl{font-size:11px;width:14px;font-weight:700;}
-  .nutr-bar-lbl-p{color:#1565c0;}
-  .nutr-bar-lbl-f{color:#c62828;}
-  .nutr-bar-lbl-c{color:#2e7d32;}
-  .nutr-bar-wrap{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;position:relative;}
-  .nutr-bar{height:100%;border-radius:4px;transition:width .5s ease;}
-  .nutr-bar-ref-line{position:absolute;top:0;height:100%;width:2px;background:rgba(0,0,0,0.2);border-radius:2px;}
-  .nutr-bar-p{background:#1565c0;}
-  .nutr-bar-f{background:#c62828;}
-  .nutr-bar-c{background:#2e7d32;}
-  .nutr-bar-val{font-size:12px;font-weight:600;min-width:40px;text-align:right;color:var(--text);}
-  .nutr-bar-ref{font-size:10px;color:var(--muted);min-width:44px;text-align:right;}
-  .pfc-section{margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border);display:flex;align-items:flex-start;gap:14px;}
-  .pfc-info{font-size:11px;color:var(--text);}
-  .pfc-title{font-size:12px;font-weight:600;margin-bottom:6px;}
-  .pfc-pct{line-height:2.2;}
-  .pfc-ideal{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6;}
-  .pfc-note{font-size:10px;color:var(--muted);margin-top:6px;opacity:0.7;}
+
+  /* ── 栄養サマリー ── */
+  .nutr-card{border-top:1px solid var(--border);background:#fafafa;}
+
+  /* カロリー大見出し */
+  .nutr-hero{display:flex;align-items:flex-end;gap:6px;padding:16px 16px 0;}
+  .nutr-hero-kcal{font-size:42px;font-weight:700;line-height:1;color:var(--col-k);}
+  .nutr-hero-unit{font-size:14px;color:var(--muted);margin-bottom:6px;}
+  .nutr-hero-ref{font-size:11px;color:var(--muted);margin-bottom:6px;margin-left:4px;}
+
+  /* PFCカード3枚横並び */
+  .pfc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px;}
+  .pfc-card{border-radius:10px;padding:10px 10px 8px;text-align:center;position:relative;}
+  .pfc-card-p{background:#e8f0ff;}
+  .pfc-card-f{background:#fff0f0;}
+  .pfc-card-c{background:#f0fff0;}
+  .pfc-card-lbl{font-size:11px;font-weight:700;margin-bottom:2px;}
+  .pfc-card-lbl-p{color:var(--col-p);}
+  .pfc-card-lbl-f{color:var(--col-f);}
+  .pfc-card-lbl-c{color:var(--col-c);}
+  .pfc-card-val{font-size:20px;font-weight:700;line-height:1.2;}
+  .pfc-card-val-p{color:var(--col-p);}
+  .pfc-card-val-f{color:var(--col-f);}
+  .pfc-card-val-c{color:var(--col-c);}
+  .pfc-card-unit{font-size:10px;color:var(--muted);}
+  .pfc-card-ref{font-size:9px;color:var(--muted);margin-top:3px;}
+  .pfc-bar-outer{height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin-top:6px;overflow:hidden;}
+  .pfc-bar-inner{height:100%;border-radius:2px;transition:width .5s ease;}
+
+  /* PFC比率バー */
+  .pfc-ratio-wrap{padding:0 16px 12px;}
+  .pfc-ratio-title{font-size:11px;color:var(--muted);margin-bottom:6px;}
+  .pfc-ratio-bar{height:18px;border-radius:9px;overflow:hidden;display:flex;}
+  .pfc-ratio-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;transition:width .5s ease;white-space:nowrap;overflow:hidden;}
+  .pfc-ratio-legend{display:flex;gap:12px;margin-top:6px;}
+  .pfc-ratio-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);}
+  .pfc-ratio-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+  /* 目安比較 */
+  .nutr-vs{padding:0 16px 14px;}
+  .nutr-vs-title{font-size:11px;color:var(--muted);margin-bottom:8px;}
+  .nutr-vs-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .nutr-vs-lbl{font-size:11px;width:12px;font-weight:700;}
+  .nutr-vs-bar-wrap{flex:1;height:6px;background:rgba(0,0,0,.08);border-radius:3px;overflow:hidden;position:relative;}
+  .nutr-vs-bar{height:100%;border-radius:3px;transition:width .5s ease;}
+  .nutr-vs-refline{position:absolute;top:-2px;height:calc(100%+4px);width:1.5px;background:rgba(0,0,0,.25);}
+  .nutr-vs-val{font-size:11px;font-weight:600;min-width:36px;text-align:right;}
+  .nutr-vs-ref{font-size:10px;color:var(--muted);min-width:40px;text-align:right;}
+  .nutr-note{font-size:10px;color:var(--muted);padding:0 16px 14px;opacity:.8;}
+
   .empty{padding:2rem;text-align:center;color:var(--muted);font-size:13px;}
 </style>
 </head>
@@ -138,17 +165,18 @@
 </div>
 
 <script>
-const CAT_LABELS = {onigiri:'おにぎり',bento:'お弁当',sandwich:'サンドイッチ',bread:'パン',sweets:'スイーツ',salad:'サラダ',souzai:'惣菜',snack:'お菓子'};
-const REF = {kcal:667, protein:20, fat:22, carbs:90};
-let allData = null, currentStore = 'seven', activeCats = new Set();
+var CAT_LABELS = {onigiri:'おにぎり',bento:'お弁当',sandwich:'サンドイッチ',bread:'パン',sweets:'スイーツ',salad:'サラダ',souzai:'惣菜',snack:'お菓子'};
+var REF = {kcal:667, p:20, f:22, c:90};
+var allData = null, currentStore = 'seven', activeCats = new Set();
 
 async function loadData() {
   try {
-    const res = await fetch('/v2/api/products');
+    var res = await fetch('/v2/api/products');
     if (!res.ok) throw new Error();
     allData = await res.json();
-    const d = new Date(allData.updated_at);
-    const fmt = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0') + ' 更新';
+    var d = new Date(allData.updated_at);
+    var fmt = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate()
+      + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0') + ' 更新';
     document.getElementById('data-status').textContent = fmt;
     document.getElementById('data-status').className = 'badge ok';
     renderCats();
@@ -163,16 +191,16 @@ async function loadData() {
 
 function renderCats() {
   if (!allData) return;
-  const cats = Object.keys(allData.stores[currentStore].categories);
-  activeCats = new Set(cats.filter(c => !['sweets','snack'].includes(c)));
-  const grid = document.getElementById('cat-grid');
+  var cats = Object.keys(allData.stores[currentStore].categories);
+  activeCats = new Set(cats.filter(function(c){ return c !== 'sweets' && c !== 'snack'; }));
+  var grid = document.getElementById('cat-grid');
   grid.innerHTML = '';
-  cats.forEach(id => {
-    const btn = document.createElement('button');
+  cats.forEach(function(id) {
+    var btn = document.createElement('button');
     btn.className = 'cat-btn' + (activeCats.has(id) ? ' active' : '');
     btn.textContent = CAT_LABELS[id] || id;
     btn.onclick = function() {
-      activeCats.has(id) ? activeCats.delete(id) : activeCats.add(id);
+      if (activeCats.has(id)) { activeCats.delete(id); } else { activeCats.add(id); }
       btn.classList.toggle('active');
     };
     grid.appendChild(btn);
@@ -180,9 +208,9 @@ function renderCats() {
 }
 
 document.getElementById('store-grid').addEventListener('click', function(e) {
-  const btn = e.target.closest('.store-btn');
+  var btn = e.target.closest('.store-btn');
   if (!btn) return;
-  document.querySelectorAll('.store-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.store-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   currentStore = btn.dataset.store;
   renderCats();
@@ -200,28 +228,67 @@ function shuffle(arr) {
   return a;
 }
 
-function makeSvgTriangle(pPct, fPct, cPct) {
-  var total = pPct + fPct + cPct || 1;
-  var pR = pPct/total, fR = fPct/total, cR = cPct/total;
-  var ax=100, ay=12, bx=18, by=162, cx=182, cy=162;
-  var px = ax*pR + bx*fR + cx*cR;
-  var py = ay*pR + by*fR + cy*cR;
-  var ip=0.15, ifv=0.25, ic=0.60;
-  var ix = ax*ip + bx*ifv + cx*ic;
-  var iy = ay*ip + by*ifv + cy*ic;
-  var svg = '<svg width="200" height="180" viewBox="0 0 200 180" style="flex-shrink:0">';
-  svg += '<polygon points="' + ax + ',' + ay + ' ' + bx + ',' + by + ' ' + cx + ',' + cy + '" fill="none" stroke="#ddd" stroke-width="1.5"/>';
-  svg += '<line x1="' + ax + '" y1="' + ay + '" x2="' + ((bx+cx)/2) + '" y2="' + ((by+cy)/2) + '" stroke="#f0f0f0" stroke-width="0.8"/>';
-  svg += '<line x1="' + bx + '" y1="' + by + '" x2="' + ((ax+cx)/2) + '" y2="' + ((ay+cy)/2) + '" stroke="#f0f0f0" stroke-width="0.8"/>';
-  svg += '<line x1="' + cx + '" y1="' + cy + '" x2="' + ((ax+bx)/2) + '" y2="' + ((ay+by)/2) + '" stroke="#f0f0f0" stroke-width="0.8"/>';
-  svg += '<circle cx="' + ix + '" cy="' + iy + '" r="10" fill="rgba(100,180,100,0.15)" stroke="rgba(100,180,100,0.5)" stroke-width="1" stroke-dasharray="3 2"/>';
-  svg += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="7" fill="#e65100" opacity="0.9"/>';
-  svg += '<text x="' + ax + '" y="' + (ay-4) + '" text-anchor="middle" font-size="11" fill="#1565c0" font-weight="600">P</text>';
-  svg += '<text x="' + (bx-8) + '" y="' + (by+4) + '" text-anchor="end" font-size="11" fill="#c62828" font-weight="600">F</text>';
-  svg += '<text x="' + (cx+8) + '" y="' + (cy+4) + '" text-anchor="start" font-size="11" fill="#2e7d32" font-weight="600">C</text>';
-  svg += '<text x="' + px.toFixed(1) + '" y="' + (py+18).toFixed(1) + '" text-anchor="middle" font-size="9" fill="#e65100">今回</text>';
-  svg += '</svg>';
-  return svg;
+function pct(val, ref) { return Math.min(Math.round(val/ref*100), 150); }
+function clamp(v) { return Math.min(v, 100); }
+
+function buildNutrCard(selected) {
+  var kcal = 0, p = 0, f = 0, c = 0, count = 0;
+  selected.forEach(function(item) {
+    if (item.kcal != null) { kcal += item.kcal; p += (item.protein||0); f += (item.fat||0); c += (item.carbs||0); count++; }
+  });
+  if (count === 0) return '';
+
+  var pCal = p*4, fCal = f*9, cCal = c*4;
+  var pfcTotal = pCal + fCal + cCal || 1;
+  var pPct = Math.round(pCal/pfcTotal*100);
+  var fPct = Math.round(fCal/pfcTotal*100);
+  var cPct = 100 - pPct - fPct;
+
+  var html = '<div class="nutr-card">';
+
+  // ── カロリー大見出し
+  html += '<div class="nutr-hero">'
+    + '<span class="nutr-hero-kcal">' + Math.round(kcal) + '</span>'
+    + '<span class="nutr-hero-unit">kcal</span>'
+    + '<span class="nutr-hero-ref">/ 目安 ' + REF.kcal + 'kcal</span>'
+    + '</div>';
+
+  // ── PFCカード3枚
+  var cards = [
+    {cls:'p', lbl:'タンパク質', val:p.toFixed(1), ref:REF.p, color:'#2979ff'},
+    {cls:'f', lbl:'脂質',       val:f.toFixed(1), ref:REF.f, color:'#e53935'},
+    {cls:'c', lbl:'炭水化物',   val:c.toFixed(1), ref:REF.c, color:'#43a047'},
+  ];
+  html += '<div class="pfc-cards">';
+  cards.forEach(function(r) {
+    var p2 = clamp(pct(parseFloat(r.val), r.ref));
+    html += '<div class="pfc-card pfc-card-' + r.cls + '">'
+      + '<div class="pfc-card-lbl pfc-card-lbl-' + r.cls + '">' + r.lbl + '</div>'
+      + '<div class="pfc-card-val pfc-card-val-' + r.cls + '">' + r.val + '</div>'
+      + '<div class="pfc-card-unit">g &nbsp;<span class="pfc-card-ref">目安' + r.ref + 'g</span></div>'
+      + '<div class="pfc-bar-outer"><div class="pfc-bar-inner" style="width:' + p2 + '%;background:' + r.color + '"></div></div>'
+      + '</div>';
+  });
+  html += '</div>';
+
+  // ── PFC比率バー
+  html += '<div class="pfc-ratio-wrap">'
+    + '<div class="pfc-ratio-title">PFCバランス（カロリー比）</div>'
+    + '<div class="pfc-ratio-bar">'
+    + '<div class="pfc-ratio-seg" style="width:' + pPct + '%;background:#2979ff">' + (pPct > 8 ? 'P '+pPct+'%' : '') + '</div>'
+    + '<div class="pfc-ratio-seg" style="width:' + fPct + '%;background:#e53935">' + (fPct > 8 ? 'F '+fPct+'%' : '') + '</div>'
+    + '<div class="pfc-ratio-seg" style="width:' + cPct + '%;background:#43a047">' + (cPct > 8 ? 'C '+cPct+'%' : '') + '</div>'
+    + '</div>'
+    + '<div class="pfc-ratio-legend">'
+    + '<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#2979ff"></div><span>P 理想13〜20%</span></div>'
+    + '<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#e53935"></div><span>F 理想20〜30%</span></div>'
+    + '<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#43a047"></div><span>C 理想50〜65%</span></div>'
+    + '</div>'
+    + '</div>';
+
+  html += '<div class="nutr-note">※成人1食あたり目安（2000kcal/日÷3食）</div>';
+  html += '</div>';
+  return html;
 }
 
 function doGacha() {
@@ -235,7 +302,11 @@ function doGacha() {
   activeCats.forEach(function(id) {
     var cat = allData.stores[currentStore].categories[id];
     if (cat) cat.items.forEach(function(item) {
-      if (item.price <= budget) pool.push(Object.assign({}, item, {catId: id}));
+      if (item.price <= budget) {
+        var obj = {name:item.name, price:item.price, catId:id,
+          kcal:item.kcal, protein:item.protein, fat:item.fat, carbs:item.carbs};
+        pool.push(obj);
+      }
     });
   });
   if (pool.length === 0) {
@@ -254,21 +325,18 @@ function doGacha() {
 
   var html = '';
   selected.forEach(function(item, idx) {
-    var nutrHtml = '';
+    var nutr = '';
     if (item.kcal != null) {
-      nutrHtml = '<div class="item-nutrition">'
-        + '<span class="nutr-pill nutr-kcal">' + item.kcal + 'kcal</span>'
-        + (item.protein != null ? '<span class="nutr-pill nutr-p">P ' + item.protein + 'g</span>' : '')
-        + (item.fat     != null ? '<span class="nutr-pill nutr-f">F ' + item.fat     + 'g</span>' : '')
-        + (item.carbs   != null ? '<span class="nutr-pill nutr-c">C ' + item.carbs   + 'g</span>' : '')
+      nutr = '<div class="item-nutrition">'
+        + '<span class="npill npill-k">' + item.kcal + 'kcal</span>'
+        + (item.protein != null ? '<span class="npill npill-p">P ' + item.protein + 'g</span>' : '')
+        + (item.fat     != null ? '<span class="npill npill-f">F ' + item.fat     + 'g</span>' : '')
+        + (item.carbs   != null ? '<span class="npill npill-c">C ' + item.carbs   + 'g</span>' : '')
         + '</div>';
     }
     html += '<div class="result-item" style="animation-delay:' + (idx*0.06) + 's">'
       + '<span class="cat-tag ' + item.catId + '">' + (CAT_LABELS[item.catId]||item.catId) + '</span>'
-      + '<div class="item-body">'
-      + '<div class="item-name">' + item.name + '</div>'
-      + nutrHtml
-      + '</div>'
+      + '<div class="item-body"><div class="item-name">' + item.name + '</div>' + nutr + '</div>'
       + '<span class="item-price">¥' + item.price.toLocaleString() + '</span>'
       + '</div>';
   });
@@ -278,61 +346,7 @@ function doGacha() {
     + '<div class="total-r">¥' + total.toLocaleString() + '</div>'
     + '</div>';
 
-  var totalKcal    = selected.reduce(function(s,i){return s+(i.kcal    ||0);}, 0);
-  var totalProtein = selected.reduce(function(s,i){return s+(i.protein ||0);}, 0);
-  var totalFat     = selected.reduce(function(s,i){return s+(i.fat     ||0);}, 0);
-  var totalCarbs   = selected.reduce(function(s,i){return s+(i.carbs   ||0);}, 0);
-
-  if (totalKcal > 0) {
-    var pCal = totalProtein * 4;
-    var fCal = totalFat     * 9;
-    var cCal = totalCarbs   * 4;
-    var pfcT = pCal + fCal + cCal || 1;
-    var pPct = Math.round(pCal/pfcT*100);
-    var fPct = Math.round(fCal/pfcT*100);
-    var cPct = Math.round(cCal/pfcT*100);
-
-    var bars = [
-      {lbl:'P', cls:'p', val:totalProtein.toFixed(1), ref:REF.protein, unit:'g'},
-      {lbl:'F', cls:'f', val:totalFat.toFixed(1),     ref:REF.fat,     unit:'g'},
-      {lbl:'C', cls:'c', val:totalCarbs.toFixed(1),   ref:REF.carbs,   unit:'g'}
-    ];
-
-    html += '<div class="nutr-summary">'
-      + '<div class="nutr-summary-title">栄養合計（成人1食あたりの目安との比較）</div>'
-      + '<div class="nutr-kcal-total">'
-      + '<span class="nutr-kcal-num">' + Math.round(totalKcal) + '</span>'
-      + '<span style="font-size:13px;color:var(--muted)">kcal</span>'
-      + '<span class="nutr-kcal-ref">/ 目安 ' + REF.kcal + 'kcal</span>'
-      + '</div>';
-
-    bars.forEach(function(r) {
-      var pct = Math.min(Math.round(parseFloat(r.val)/r.ref*100), 150);
-      html += '<div class="nutr-bar-row">'
-        + '<span class="nutr-bar-lbl nutr-bar-lbl-' + r.cls + '">' + r.lbl + '</span>'
-        + '<div class="nutr-bar-wrap">'
-        + '<div class="nutr-bar nutr-bar-' + r.cls + '" style="width:' + Math.min(pct,100) + '%"></div>'
-        + '<div class="nutr-bar-ref-line" style="left:66.6%"></div>'
-        + '</div>'
-        + '<span class="nutr-bar-val">' + r.val + r.unit + '</span>'
-        + '<span class="nutr-bar-ref">目安' + r.ref + r.unit + '</span>'
-        + '</div>';
-    });
-
-    html += '<div class="pfc-section">'
-      + makeSvgTriangle(pPct, fPct, cPct)
-      + '<div class="pfc-info">'
-      + '<div class="pfc-title">PFCバランス</div>'
-      + '<div class="pfc-pct">'
-      + '<span style="color:#1565c0;font-weight:700">P</span> ' + pPct + '%　'
-      + '<span style="color:#c62828;font-weight:700">F</span> ' + fPct + '%　'
-      + '<span style="color:#2e7d32;font-weight:700">C</span> ' + cPct + '%'
-      + '</div>'
-      + '<div class="pfc-ideal">理想目安<br>P 13〜20%<br>F 20〜30%<br>C 50〜65%</div>'
-      + '<div class="pfc-note">※成人1食あたり基準</div>'
-      + '</div></div>'
-      + '</div>';
-  }
+  html += buildNutrCard(selected);
 
   document.getElementById('result-box').innerHTML = html;
 }
