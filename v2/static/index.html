@@ -333,21 +333,25 @@ function doGacha() {
   const rem = budget - total;
   const remClass = rem === 0 ? 'zero' : rem > 0 ? 'ok' : 'over';
 
-  let html = selected.map((item, idx) => `
-    <div class="result-item" style="animation-delay:${idx * 0.06}s">
-      <span class="cat-tag ${item.catId}">${CAT_LABELS[item.catId] || item.catId}</span>
-      <div class="item-body" style="flex:1;min-width:0;">
-        <div class="item-name">${item.name}</div>
-        ${item.kcal != null ? `<div class="item-nutrition">
-          <span class="nutr-pill nutr-kcal">${item.kcal}kcal</span>
-          ${item.protein != null ? `<span class="nutr-pill nutr-p">P ${item.protein}g</span>` : ''}
-          ${item.fat != null ? `<span class="nutr-pill nutr-f">F ${item.fat}g</span>` : ''}
-          ${item.carbs != null ? `<span class="nutr-pill nutr-c">C ${item.carbs}g</span>` : ''}
-        </div>` : ''}
-      </div>
-      <span class="item-price">¥${item.price.toLocaleString()}</span>
-    </div>
-  `).join('');
+  let html = selected.map((item, idx) => {
+    let nutrHtml = '';
+    if (item.kcal != null) {
+      nutrHtml = '<div class="item-nutrition">'
+        + '<span class="nutr-pill nutr-kcal">' + item.kcal + 'kcal</span>'
+        + (item.protein != null ? '<span class="nutr-pill nutr-p">P ' + item.protein + 'g</span>' : '')
+        + (item.fat     != null ? '<span class="nutr-pill nutr-f">F ' + item.fat     + 'g</span>' : '')
+        + (item.carbs   != null ? '<span class="nutr-pill nutr-c">C ' + item.carbs   + 'g</span>' : '')
+        + '</div>';
+    }
+    return '<div class="result-item" style="animation-delay:' + (idx * 0.06) + 's">'
+      + '<span class="cat-tag ' + item.catId + '">' + (CAT_LABELS[item.catId] || item.catId) + '</span>'
+      + '<div class="item-body" style="flex:1;min-width:0;">'
+      + '<div class="item-name">' + item.name + '</div>'
+      + nutrHtml
+      + '</div>'
+      + '<span class="item-price">\u00a5' + item.price.toLocaleString() + '</span>'
+      + '</div>';
+  }).join('');
 
   // 栄養合計
   const totalKcal    = selected.reduce((s,i) => s + (i.kcal    || 0), 0);
