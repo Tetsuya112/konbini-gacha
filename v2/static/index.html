@@ -186,7 +186,7 @@ var lastSelected=[],lastStoreName='',lastBudget=0;
 
 async function loadData(){
   try{
-    var res=await fetch('/v2/api/products');
+    var res=await fetch('https://gist.githubusercontent.com/Tetsuya112/265e513222d90886a2d7621bac8f5af3/raw/konbini_products_v2.json');
     if(!res.ok)throw new Error();
     allData=await res.json();
     var d=new Date(allData.updated_at);
