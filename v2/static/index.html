@@ -77,19 +77,13 @@
   .rem.ok{background:#e8f5e9;color:#2e7d32;}
   .rem.zero{background:#e8f5e9;color:#1b5e20;}
   .rem.over{background:#fce8e8;color:#b71c1c;}
-
-  /* ── 栄養サマリー ── */
   .nutr-card{border-top:1px solid var(--border);background:#fafafa;}
-
-  /* カロリー大見出し */
   .nutr-hero{display:flex;align-items:flex-end;gap:6px;padding:16px 16px 0;}
   .nutr-hero-kcal{font-size:42px;font-weight:700;line-height:1;color:var(--col-k);}
   .nutr-hero-unit{font-size:14px;color:var(--muted);margin-bottom:6px;}
   .nutr-hero-ref{font-size:11px;color:var(--muted);margin-bottom:6px;margin-left:4px;}
-
-  /* PFCカード3枚横並び */
   .pfc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px;}
-  .pfc-card{border-radius:10px;padding:10px 10px 8px;text-align:center;position:relative;}
+  .pfc-card{border-radius:10px;padding:10px 10px 8px;text-align:center;}
   .pfc-card-p{background:#e8f0ff;}
   .pfc-card-f{background:#fff0f0;}
   .pfc-card-c{background:#f0fff0;}
@@ -102,37 +96,38 @@
   .pfc-card-val-f{color:var(--col-f);}
   .pfc-card-val-c{color:var(--col-c);}
   .pfc-card-unit{font-size:10px;color:var(--muted);}
-  .pfc-card-ref{font-size:9px;color:var(--muted);margin-top:3px;}
+  .pfc-card-ref{font-size:9px;color:var(--muted);}
   .pfc-bar-outer{height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin-top:6px;overflow:hidden;}
   .pfc-bar-inner{height:100%;border-radius:2px;transition:width .5s ease;}
-
-  /* PFC比率バー */
   .pfc-ratio-wrap{padding:0 16px 12px;}
   .pfc-ratio-title{font-size:11px;color:var(--muted);margin-bottom:6px;}
   .pfc-ratio-bar{height:18px;border-radius:9px;overflow:hidden;display:flex;}
   .pfc-ratio-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;transition:width .5s ease;white-space:nowrap;overflow:hidden;}
-  .pfc-ratio-legend{display:flex;gap:12px;margin-top:6px;}
+  .pfc-ratio-legend{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;}
   .pfc-ratio-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);}
   .pfc-ratio-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-
-  /* 目安比較 */
-  .nutr-vs{padding:0 16px 14px;}
-  .nutr-vs-title{font-size:11px;color:var(--muted);margin-bottom:8px;}
-  .nutr-vs-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .nutr-vs-lbl{font-size:11px;width:12px;font-weight:700;}
-  .nutr-vs-bar-wrap{flex:1;height:6px;background:rgba(0,0,0,.08);border-radius:3px;overflow:hidden;position:relative;}
-  .nutr-vs-bar{height:100%;border-radius:3px;transition:width .5s ease;}
-  .nutr-vs-refline{position:absolute;top:-2px;height:calc(100%+4px);width:1.5px;background:rgba(0,0,0,.25);}
-  .nutr-vs-val{font-size:11px;font-weight:600;min-width:36px;text-align:right;}
-  .nutr-vs-ref{font-size:10px;color:var(--muted);min-width:40px;text-align:right;}
   .nutr-note{font-size:10px;color:var(--muted);padding:0 16px 14px;opacity:.8;}
-
   .empty{padding:2rem;text-align:center;color:var(--muted);font-size:13px;}
+  .action-row{display:flex;gap:8px;margin-top:12px;}
+  .btn-share{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;border-radius:12px;border:none;background:#000;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+  .btn-share:hover{opacity:.8;}
+  .btn-tip{display:flex;align-items:center;justify-content:center;gap:5px;padding:13px 16px;border-radius:12px;border:1.5px solid #f59e0b;background:#fffbeb;color:#92400e;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .btn-tip:hover{background:#f59e0b;color:#fff;}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;position:relative;}
+  .modal-close{position:absolute;top:14px;right:18px;font-size:20px;background:none;border:none;cursor:pointer;color:#888;line-height:1;}
+  .modal-emoji{font-size:40px;margin-bottom:8px;}
+  .modal-title{font-size:18px;font-weight:700;margin-bottom:6px;}
+  .modal-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+  .tip-btn{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;border:1.5px solid var(--border-s);background:#fafafa;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--text);margin-bottom:8px;}
+  .tip-btn:hover{background:#f59e0b;border-color:#f59e0b;color:#fff;}
+  .modal-note{font-size:11px;color:var(--muted);}
 </style>
 </head>
 <body>
 <header>
-  <h1>🎰 コンビニ飯ガチャ</h1>
+  <h1>&#127920; コンビニ飯ガチャ</h1>
   <div class="subtitle">予算内でランダムに選んでくれる</div>
   <div id="data-status" class="badge ng">データ読み込み中...</div>
 </header>
@@ -146,209 +141,255 @@
   <div class="label">予算</div>
   <div class="budget-wrap">
     <div class="budget-row">
-      <span class="budget-sym">¥</span>
+      <span class="budget-sym">&#165;</span>
       <input id="budget" type="number" value="800" min="100" max="5000" step="50">
       <span class="budget-unit">円</span>
     </div>
     <div class="presets">
-      <button class="preset-btn" onclick="setBudget(500)">¥500</button>
-      <button class="preset-btn" onclick="setBudget(700)">¥700</button>
-      <button class="preset-btn" onclick="setBudget(800)">¥800</button>
-      <button class="preset-btn" onclick="setBudget(1000)">¥1,000</button>
-      <button class="preset-btn" onclick="setBudget(1500)">¥1,500</button>
+      <button class="preset-btn" onclick="setBudget(500)">&#165;500</button>
+      <button class="preset-btn" onclick="setBudget(700)">&#165;700</button>
+      <button class="preset-btn" onclick="setBudget(800)">&#165;800</button>
+      <button class="preset-btn" onclick="setBudget(1000)">&#165;1,000</button>
+      <button class="preset-btn" onclick="setBudget(1500)">&#165;1,500</button>
     </div>
   </div>
   <div class="label">カテゴリ</div>
   <div class="cat-grid" id="cat-grid"></div>
   <button class="gacha-btn" id="gacha-btn" onclick="doGacha()" disabled>データ読み込み中...</button>
   <div class="result-box" id="result-box"><div class="result-ph">コンビニと予算を設定して「ガチャる！」</div></div>
+  <div class="action-row" id="action-row" style="display:none">
+    <button class="btn-share" onclick="shareResult()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.741l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Xにシェア
+    </button>
+    <button class="btn-tip" onclick="document.getElementById('tip-modal').classList.add('open')">&#9749; おごる</button>
+  </div>
 </div>
-
+<div class="modal-overlay" id="tip-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('tip-modal').classList.remove('open')">&#215;</button>
+    <div class="modal-emoji">&#9749;</div>
+    <div class="modal-title">コーヒー1杯おごる</div>
+    <div class="modal-desc">このアプリが役に立ったら、開発者にコーヒーをおごってください！継続的な改善の励みになります。</div>
+    <a class="tip-btn" href="https://buymeacoffee.com/casutera" target="_blank" rel="noopener">
+      <span>&#9749; Buy Me a Coffee</span>
+      <span style="font-size:12px;opacity:.7">&#165;100&#12316;</span>
+    </a>
+    <div class="modal-note">&#x203B; 外部サービス（Buy Me a Coffee）に移動します</div>
+  </div>
+</div>
 <script>
-var CAT_LABELS = {onigiri:'おにぎり',bento:'お弁当',sandwich:'サンドイッチ',bread:'パン',sweets:'スイーツ',salad:'サラダ',souzai:'惣菜',snack:'お菓子'};
-var REF = {kcal:667, p:20, f:22, c:90};
-var allData = null, currentStore = 'seven', activeCats = new Set();
+var CAT_LABELS={onigiri:'おにぎり',bento:'お弁当',sandwich:'サンドイッチ',bread:'パン',sweets:'スイーツ',salad:'サラダ',souzai:'惣菜',snack:'お菓子'};
+var REF={kcal:667,p:20,f:22,c:90};
+var allData=null,currentStore='seven',activeCats=new Set();
+var lastSelected=[],lastStoreName='',lastBudget=0;
 
-async function loadData() {
-  try {
-    var res = await fetch('/v2/api/products');
-    if (!res.ok) throw new Error();
-    allData = await res.json();
-    var d = new Date(allData.updated_at);
-    var fmt = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate()
-      + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0') + ' 更新';
-    document.getElementById('data-status').textContent = fmt;
-    document.getElementById('data-status').className = 'badge ok';
+async function loadData(){
+  try{
+    var res=await fetch('/v2/api/products');
+    if(!res.ok)throw new Error();
+    allData=await res.json();
+    var d=new Date(allData.updated_at);
+    var fmt=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+' 更新';
+    document.getElementById('data-status').textContent=fmt;
+    document.getElementById('data-status').className='badge ok';
     renderCats();
-    document.getElementById('gacha-btn').disabled = false;
-    document.getElementById('gacha-btn').textContent = 'ガチャる！🎲';
-  } catch(e) {
-    document.getElementById('data-status').textContent = 'データなし';
-    document.getElementById('data-status').className = 'badge ng';
-    document.getElementById('gacha-btn').textContent = 'データがありません';
+    document.getElementById('gacha-btn').disabled=false;
+    document.getElementById('gacha-btn').textContent='ガチャる！🎲';
+  }catch(e){
+    document.getElementById('data-status').textContent='データなし';
+    document.getElementById('data-status').className='badge ng';
+    document.getElementById('gacha-btn').textContent='データがありません';
   }
 }
 
-function renderCats() {
-  if (!allData) return;
-  var cats = Object.keys(allData.stores[currentStore].categories);
-  activeCats = new Set(cats.filter(function(c){ return c !== 'sweets' && c !== 'snack'; }));
-  var grid = document.getElementById('cat-grid');
-  grid.innerHTML = '';
-  cats.forEach(function(id) {
-    var btn = document.createElement('button');
-    btn.className = 'cat-btn' + (activeCats.has(id) ? ' active' : '');
-    btn.textContent = CAT_LABELS[id] || id;
-    btn.onclick = function() {
-      if (activeCats.has(id)) { activeCats.delete(id); } else { activeCats.add(id); }
+function renderCats(){
+  if(!allData)return;
+  var cats=Object.keys(allData.stores[currentStore].categories);
+  activeCats=new Set(cats.filter(function(c){return c!=='sweets'&&c!=='snack';}));
+  var grid=document.getElementById('cat-grid');
+  grid.innerHTML='';
+  cats.forEach(function(id){
+    var btn=document.createElement('button');
+    btn.className='cat-btn'+(activeCats.has(id)?' active':'');
+    btn.textContent=CAT_LABELS[id]||id;
+    btn.onclick=function(){
+      if(activeCats.has(id)){activeCats.delete(id);}else{activeCats.add(id);}
       btn.classList.toggle('active');
     };
     grid.appendChild(btn);
   });
 }
 
-document.getElementById('store-grid').addEventListener('click', function(e) {
-  var btn = e.target.closest('.store-btn');
-  if (!btn) return;
-  document.querySelectorAll('.store-btn').forEach(function(b){ b.classList.remove('active'); });
+document.getElementById('store-grid').addEventListener('click',function(e){
+  var btn=e.target.closest('.store-btn');
+  if(!btn)return;
+  document.querySelectorAll('.store-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  currentStore = btn.dataset.store;
+  currentStore=btn.dataset.store;
   renderCats();
-  document.getElementById('result-box').innerHTML = '<div class="result-ph">コンビニと予算を設定して「ガチャる！」</div>';
+  document.getElementById('result-box').innerHTML='<div class="result-ph">コンビニと予算を設定して「ガチャる！」</div>';
+  document.getElementById('action-row').style.display='none';
 });
 
-function setBudget(v) { document.getElementById('budget').value = v; }
+function setBudget(v){document.getElementById('budget').value=v;}
 
-function shuffle(arr) {
-  var a = arr.slice();
-  for (var i = a.length-1; i > 0; i--) {
-    var j = Math.floor(Math.random()*(i+1));
-    var t = a[i]; a[i] = a[j]; a[j] = t;
-  }
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
   return a;
 }
 
-function pct(val, ref) { return Math.min(Math.round(val/ref*100), 150); }
-function clamp(v) { return Math.min(v, 100); }
-
-function buildNutrCard(selected) {
-  var kcal = 0, p = 0, f = 0, c = 0, count = 0;
-  selected.forEach(function(item) {
-    if (item.kcal != null) { kcal += item.kcal; p += (item.protein||0); f += (item.fat||0); c += (item.carbs||0); count++; }
+function buildNutrCard(sel){
+  var kcal=0,p=0,f=0,c=0,n=0;
+  sel.forEach(function(i){if(i.kcal!=null){kcal+=i.kcal;p+=(i.protein||0);f+=(i.fat||0);c+=(i.carbs||0);n++;}});
+  if(n===0)return '';
+  var pC=p*4,fC=f*9,cC=c*4,tot=pC+fC+cC||1;
+  var pP=Math.round(pC/tot*100),fP=Math.round(fC/tot*100),cP=100-pP-fP;
+  var h='<div class="nutr-card">';
+  h+='<div class="nutr-hero"><span class="nutr-hero-kcal">'+Math.round(kcal)+'</span><span class="nutr-hero-unit">kcal</span><span class="nutr-hero-ref">/ 目安 '+REF.kcal+'kcal</span></div>';
+  var cards=[{cls:'p',lbl:'タンパク質',val:p.toFixed(1),ref:REF.p,color:'#2979ff'},{cls:'f',lbl:'脂質',val:f.toFixed(1),ref:REF.f,color:'#e53935'},{cls:'c',lbl:'炭水化物',val:c.toFixed(1),ref:REF.c,color:'#43a047'}];
+  h+='<div class="pfc-cards">';
+  cards.forEach(function(r){
+    var pct=Math.min(Math.round(parseFloat(r.val)/r.ref*100),100);
+    h+='<div class="pfc-card pfc-card-'+r.cls+'">'
+      +'<div class="pfc-card-lbl pfc-card-lbl-'+r.cls+'">'+r.lbl+'</div>'
+      +'<div class="pfc-card-val pfc-card-val-'+r.cls+'">'+r.val+'</div>'
+      +'<div class="pfc-card-unit">g <span class="pfc-card-ref">目安'+r.ref+'g</span></div>'
+      +'<div class="pfc-bar-outer"><div class="pfc-bar-inner" style="width:'+pct+'%;background:'+r.color+'"></div></div>'
+      +'</div>';
   });
-  if (count === 0) return '';
-
-  var pCal = p*4, fCal = f*9, cCal = c*4;
-  var pfcTotal = pCal + fCal + cCal || 1;
-  var pPct = Math.round(pCal/pfcTotal*100);
-  var fPct = Math.round(fCal/pfcTotal*100);
-  var cPct = 100 - pPct - fPct;
-
-  var html = '<div class="nutr-card">';
-
-  // ── カロリー大見出し
-  html += '<div class="nutr-hero">'
-    + '<span class="nutr-hero-kcal">' + Math.round(kcal) + '</span>'
-    + '<span class="nutr-hero-unit">kcal</span>'
-    + '<span class="nutr-hero-ref">/ 目安 ' + REF.kcal + 'kcal</span>'
-    + '</div>';
-
-  // ── PFCカード3枚
-  var cards = [
-    {cls:'p', lbl:'タンパク質', val:p.toFixed(1), ref:REF.p, color:'#2979ff'},
-    {cls:'f', lbl:'脂質',       val:f.toFixed(1), ref:REF.f, color:'#e53935'},
-    {cls:'c', lbl:'炭水化物',   val:c.toFixed(1), ref:REF.c, color:'#43a047'},
-  ];
-  html += '<div class="pfc-cards">';
-  cards.forEach(function(r) {
-    var p2 = clamp(pct(parseFloat(r.val), r.ref));
-    html += '<div class="pfc-card pfc-card-' + r.cls + '">'
-      + '<div class="pfc-card-lbl pfc-card-lbl-' + r.cls + '">' + r.lbl + '</div>'
-      + '<div class="pfc-card-val pfc-card-val-' + r.cls + '">' + r.val + '</div>'
-      + '<div class="pfc-card-unit">g &nbsp;<span class="pfc-card-ref">目安' + r.ref + 'g</span></div>'
-      + '<div class="pfc-bar-outer"><div class="pfc-bar-inner" style="width:' + p2 + '%;background:' + r.color + '"></div></div>'
-      + '</div>';
-  });
-  html += '</div>';
-
-  // ── PFC比率バー
-  html += '<div class="pfc-ratio-wrap">'
-    + '<div class="pfc-ratio-title">PFCバランス（カロリー比）</div>'
-    + '<div class="pfc-ratio-bar">'
-    + '<div class="pfc-ratio-seg" style="width:' + pPct + '%;background:#2979ff">' + (pPct > 8 ? 'P '+pPct+'%' : '') + '</div>'
-    + '<div class="pfc-ratio-seg" style="width:' + fPct + '%;background:#e53935">' + (fPct > 8 ? 'F '+fPct+'%' : '') + '</div>'
-    + '<div class="pfc-ratio-seg" style="width:' + cPct + '%;background:#43a047">' + (cPct > 8 ? 'C '+cPct+'%' : '') + '</div>'
-    + '</div>'
-    + '<div class="pfc-ratio-legend">'
-    + '<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#2979ff"></div><span>P 理想13〜20%</span></div>'
-    + '<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#e53935"></div><span>F 理想20〜30%</span></div>'
-    + '<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#43a047"></div><span>C 理想50〜65%</span></div>'
-    + '</div>'
-    + '</div>';
-
-  html += '<div class="nutr-note">※成人1食あたり目安（2000kcal/日÷3食）</div>';
-  html += '</div>';
-  return html;
+  h+='</div>';
+  h+='<div class="pfc-ratio-wrap"><div class="pfc-ratio-title">PFCバランス（カロリー比）</div>'
+    +'<div class="pfc-ratio-bar">'
+    +'<div class="pfc-ratio-seg" style="width:'+pP+'%;background:#2979ff">'+(pP>8?'P '+pP+'%':'')+'</div>'
+    +'<div class="pfc-ratio-seg" style="width:'+fP+'%;background:#e53935">'+(fP>8?'F '+fP+'%':'')+'</div>'
+    +'<div class="pfc-ratio-seg" style="width:'+cP+'%;background:#43a047">'+(cP>8?'C '+cP+'%':'')+'</div>'
+    +'</div>'
+    +'<div class="pfc-ratio-legend">'
+    +'<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#2979ff"></div><span>P 理想13〜20%</span></div>'
+    +'<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#e53935"></div><span>F 理想20〜30%</span></div>'
+    +'<div class="pfc-ratio-item"><div class="pfc-ratio-dot" style="background:#43a047"></div><span>C 理想50〜65%</span></div>'
+    +'</div></div>';
+  h+='<div class="nutr-note">※成人1食あたり目安（2000kcal/日÷3食）</div></div>';
+  return h;
 }
 
-function doGacha() {
-  if (!allData) return;
-  var budget = parseInt(document.getElementById('budget').value) || 800;
-  if (activeCats.size === 0) {
-    document.getElementById('result-box').innerHTML = '<div class="empty">カテゴリを選んでください</div>';
-    return;
-  }
-  var pool = [];
-  activeCats.forEach(function(id) {
-    var cat = allData.stores[currentStore].categories[id];
-    if (cat) cat.items.forEach(function(item) {
-      if (item.price <= budget) {
-        var obj = {name:item.name, price:item.price, catId:id,
-          kcal:item.kcal, protein:item.protein, fat:item.fat, carbs:item.carbs};
-        pool.push(obj);
-      }
+function doGacha(){
+  if(!allData)return;
+  var budget=parseInt(document.getElementById('budget').value)||800;
+  if(activeCats.size===0){document.getElementById('result-box').innerHTML='<div class="empty">カテゴリを選んでください</div>';return;}
+  var pool=[];
+  activeCats.forEach(function(id){
+    var cat=allData.stores[currentStore].categories[id];
+    if(cat)cat.items.forEach(function(item){
+      if(item.price<=budget)pool.push({name:item.name,price:item.price,catId:id,kcal:item.kcal,protein:item.protein,fat:item.fat,carbs:item.carbs});
     });
   });
-  if (pool.length === 0) {
-    document.getElementById('result-box').innerHTML = '<div class="empty">予算内の商品が見つかりませんでした 😢</div>';
-    return;
+  if(pool.length===0){document.getElementById('result-box').innerHTML='<div class="empty">予算内の商品が見つかりませんでした</div>';return;}
+  pool=shuffle(pool);
+  var selected=[],remaining=budget;
+  for(var i=0;i<pool.length;i++){
+    if(pool[i].price<=remaining){selected.push(pool[i]);remaining-=pool[i].price;}
+    if(remaining<80)break;
   }
-  pool = shuffle(pool);
-  var selected = [], remaining = budget;
-  for (var i = 0; i < pool.length; i++) {
-    if (pool[i].price <= remaining) { selected.push(pool[i]); remaining -= pool[i].price; }
-    if (remaining < 80) break;
-  }
-  var total = selected.reduce(function(s,i){return s+i.price;}, 0);
-  var rem = budget - total;
-  var rc = rem === 0 ? 'zero' : rem > 0 ? 'ok' : 'over';
-
-  var html = '';
-  selected.forEach(function(item, idx) {
-    var nutr = '';
-    if (item.kcal != null) {
-      nutr = '<div class="item-nutrition">'
-        + '<span class="npill npill-k">' + item.kcal + 'kcal</span>'
-        + (item.protein != null ? '<span class="npill npill-p">P ' + item.protein + 'g</span>' : '')
-        + (item.fat     != null ? '<span class="npill npill-f">F ' + item.fat     + 'g</span>' : '')
-        + (item.carbs   != null ? '<span class="npill npill-c">C ' + item.carbs   + 'g</span>' : '')
-        + '</div>';
+  var total=selected.reduce(function(s,i){return s+i.price;},0);
+  var rem=budget-total;
+  var rc=rem===0?'zero':rem>0?'ok':'over';
+  var html='';
+  selected.forEach(function(item,idx){
+    var nutr='';
+    if(item.kcal!=null){
+      nutr='<div class="item-nutrition">'
+        +'<span class="npill npill-k">'+item.kcal+'kcal</span>'
+        +(item.protein!=null?'<span class="npill npill-p">P '+item.protein+'g</span>':'')
+        +(item.fat!=null?'<span class="npill npill-f">F '+item.fat+'g</span>':'')
+        +(item.carbs!=null?'<span class="npill npill-c">C '+item.carbs+'g</span>':'')
+        +'</div>';
     }
-    html += '<div class="result-item" style="animation-delay:' + (idx*0.06) + 's">'
-      + '<span class="cat-tag ' + item.catId + '">' + (CAT_LABELS[item.catId]||item.catId) + '</span>'
-      + '<div class="item-body"><div class="item-name">' + item.name + '</div>' + nutr + '</div>'
-      + '<span class="item-price">¥' + item.price.toLocaleString() + '</span>'
-      + '</div>';
+    html+='<div class="result-item" style="animation-delay:'+(idx*0.06)+'s">'
+      +'<span class="cat-tag '+item.catId+'">'+(CAT_LABELS[item.catId]||item.catId)+'</span>'
+      +'<div class="item-body"><div class="item-name">'+item.name+'</div>'+nutr+'</div>'
+      +'<span class="item-price">&#165;'+item.price.toLocaleString()+'</span>'
+      +'</div>';
   });
+  html+='<div class="result-total">'
+    +'<div class="total-l">合計<span class="rem '+rc+'">おつり &#165;'+rem.toLocaleString()+'</span></div>'
+    +'<div class="total-r">&#165;'+total.toLocaleString()+'</div>'
+    +'</div>';
+  html+=buildNutrCard(selected);
+  document.getElementById('result-box').innerHTML=html;
+  lastSelected=selected;
+  lastStoreName=document.querySelector('.store-btn.active .name').textContent;
+  lastBudget=budget;
+  document.getElementById('action-row').style.display='flex';
+}
 
-  html += '<div class="result-total">'
-    + '<div class="total-l">合計<span class="rem ' + rc + '">おつり ¥' + rem.toLocaleString() + '</span></div>'
-    + '<div class="total-r">¥' + total.toLocaleString() + '</div>'
-    + '</div>';
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
 
-  html += buildNutrCard(selected);
-
-  document.getElementById('result-box').innerHTML = html;
+function shareResult(){
+  if(lastSelected.length===0)return;
+  var W=600,PAD=28,rowH=54;
+  var H=70+lastSelected.length*rowH+20+48+PAD;
+  var canvas=document.createElement('canvas');
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  var ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var font='-apple-system,Hiragino Sans,Yu Gothic,sans-serif';
+  ctx.fillStyle='#f5f4f0';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#ffffff';roundRect(ctx,PAD,PAD,W-PAD*2,H-PAD*2,16);ctx.fill();
+  ctx.fillStyle='#1a1a1a';ctx.font='bold 17px '+font;ctx.textAlign='center';
+  ctx.fillText('コンビニ飯ガチャ',W/2,PAD+26);
+  ctx.font='12px '+font;ctx.fillStyle='#888';
+  ctx.fillText(lastStoreName+'  /  予算 ¥'+lastBudget.toLocaleString(),W/2,PAD+44);
+  ctx.strokeStyle='#eee';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PAD+16,PAD+52);ctx.lineTo(W-PAD-16,PAD+52);ctx.stroke();
+  var catColors={
+    onigiri:{bg:'#e8f5e9',fg:'#2e7d32'},bento:{bg:'#fff3e0',fg:'#e65100'},
+    sandwich:{bg:'#fce4ec',fg:'#c62828'},bread:{bg:'#fce4ec',fg:'#c62828'},
+    sweets:{bg:'#f3e5f5',fg:'#6a1b9a'},salad:{bg:'#e8f5e9',fg:'#1b5e20'},
+    souzai:{bg:'#e3f2fd',fg:'#0d47a1'},snack:{bg:'#fff8e1',fg:'#f57f17'}
+  };
+  var baseY=PAD+60;
+  lastSelected.forEach(function(item,i){
+    var y=baseY+i*rowH;
+    var col=catColors[item.catId]||{bg:'#f0f0f0',fg:'#555'};
+    ctx.fillStyle=col.bg;roundRect(ctx,PAD+14,y+5,50,18,9);ctx.fill();
+    ctx.fillStyle=col.fg;ctx.font='bold 9px '+font;ctx.textAlign='center';
+    ctx.fillText(CAT_LABELS[item.catId]||item.catId,PAD+39,y+17);
+    ctx.fillStyle='#1a1a1a';ctx.font='13px '+font;ctx.textAlign='left';
+    var nm=item.name.length>24?item.name.slice(0,24)+'…':item.name;
+    ctx.fillText(nm,PAD+72,y+17);
+    if(item.kcal){ctx.fillStyle='#e65100';ctx.font='10px '+font;ctx.fillText(item.kcal+'kcal',PAD+72,y+32);}
+    ctx.fillStyle='#1a1a1a';ctx.font='bold 14px '+font;ctx.textAlign='right';
+    ctx.fillText('¥'+item.price.toLocaleString(),W-PAD-16,y+17);
+    if(i<lastSelected.length-1){
+      ctx.strokeStyle='#f0f0f0';ctx.lineWidth=0.8;
+      ctx.beginPath();ctx.moveTo(PAD+14,y+rowH-2);ctx.lineTo(W-PAD-14,y+rowH-2);ctx.stroke();
+    }
+  });
+  var totalY=baseY+lastSelected.length*rowH+10;
+  ctx.fillStyle='#f8f8f8';roundRect(ctx,PAD+14,totalY,W-PAD*2-28,34,8);ctx.fill();
+  var total=lastSelected.reduce(function(s,i){return s+i.price;},0);
+  ctx.fillStyle='#888';ctx.font='12px '+font;ctx.textAlign='left';
+  ctx.fillText('合計',PAD+26,totalY+21);
+  ctx.fillStyle='#1a1a1a';ctx.font='bold 15px '+font;ctx.textAlign='right';
+  ctx.fillText('¥'+total.toLocaleString(),W-PAD-24,totalY+21);
+  var link=document.createElement('a');
+  link.download='konbini-gacha.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+  var lines=lastSelected.map(function(i){return i.name+' ¥'+i.price;});
+  var text='#コンビニ飯ガチャ\n'+lastStoreName+' / ¥'+lastBudget+'\n'+lines.join('\n')+'\n合計 ¥'+total+'\nhttps://konbini-gacha.onrender.com/v2';
+  setTimeout(function(){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank');},500);
 }
 
 loadData();
