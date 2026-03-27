@@ -14,14 +14,14 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;min-height:100vh;}
   header{padding:1.5rem 1rem 1rem;text-align:center;}
-  header h1{font-size:22px;font-weight:700;letter-spacing:-.02em;}
+  header h1{font-size:26px;font-weight:700;letter-spacing:-.02em;}
   .subtitle{font-size:12px;color:var(--muted);margin-top:4px;}
   .badge{display:inline-block;margin-top:8px;font-size:11px;padding:3px 10px;border-radius:20px;}
   .badge.ok{background:#e8f5ec;color:#2e7d32;}
   .badge.ng{background:#fce8e8;color:#b71c1c;}
-  .container{max-width:480px;margin:0 auto;padding:0 1rem 2rem;}
+  .container{max-width:680px;margin:0 auto;padding:0 1.5rem 2rem;}
   .label{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
-  .store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem;}
+  .store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem;max-width:400px;}
   .store-btn{border:1.5px solid var(--border-s);border-radius:12px;padding:12px 6px 10px;cursor:pointer;background:var(--surface);text-align:center;transition:all .15s;user-select:none;}
   .store-btn:hover{background:#f0f0f0;}
   .dot{width:10px;height:10px;border-radius:50%;margin:0 auto 6px;}
@@ -44,13 +44,13 @@
   .cat-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem;}
   .cat-btn{border:1px solid var(--border-s);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text);transition:all .12s;}
   .cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-  .gacha-btn{width:100%;padding:16px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .15s,transform .1s;margin-bottom:1.25rem;}
+  .gacha-btn{width:100%;padding:18px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:18px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .15s,transform .1s;margin-bottom:1.25rem;}
   .gacha-btn:hover{opacity:.85;}
   .gacha-btn:active{transform:scale(.98);}
   .gacha-btn:disabled{opacity:.35;cursor:not-allowed;}
   .result-box{background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;}
   .result-ph{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:13px;}
-  .result-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);animation:fadeUp .25s ease both;}
+  .result-item{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);animation:fadeUp .25s ease both;}
   .result-item:last-of-type{border-bottom:none;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .cat-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
@@ -62,14 +62,14 @@
   .cat-tag.souzai{background:#e3f2fd;color:#0d47a1;}
   .cat-tag.snack{background:#fff8e1;color:#f57f17;}
   .item-body{flex:1;min-width:0;}
-  .item-name{font-size:13px;line-height:1.4;}
+  .item-name{font-size:14px;line-height:1.4;}
   .item-nutrition{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
   .npill{font-size:10px;padding:2px 6px;border-radius:8px;white-space:nowrap;font-weight:600;}
   .npill-k{background:#fff3e0;color:#e65100;}
   .npill-p{background:#e3f2fd;color:#0d47a1;}
   .npill-f{background:#fce4ec;color:#c62828;}
   .npill-c{background:#e8f5e9;color:#2e7d32;}
-  .item-price{font-size:15px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+  .item-price{font-size:16px;font-weight:700;white-space:nowrap;flex-shrink:0;}
   .result-total{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fafafa;border-top:1.5px solid var(--border-s);}
   .total-l{font-size:12px;color:var(--muted);}
   .total-r{font-size:20px;font-weight:700;}
@@ -79,7 +79,7 @@
   .rem.over{background:#fce8e8;color:#b71c1c;}
   .nutr-card{border-top:1px solid var(--border);background:#fafafa;}
   .nutr-hero{display:flex;align-items:flex-end;gap:6px;padding:16px 16px 0;}
-  .nutr-hero-kcal{font-size:42px;font-weight:700;line-height:1;color:var(--col-k);}
+  .nutr-hero-kcal{font-size:48px;font-weight:700;line-height:1;color:var(--col-k);}
   .nutr-hero-unit{font-size:14px;color:var(--muted);margin-bottom:6px;}
   .nutr-hero-ref{font-size:11px;color:var(--muted);margin-bottom:6px;margin-left:4px;}
   .pfc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px;}
@@ -91,7 +91,7 @@
   .pfc-card-lbl-p{color:var(--col-p);}
   .pfc-card-lbl-f{color:var(--col-f);}
   .pfc-card-lbl-c{color:var(--col-c);}
-  .pfc-card-val{font-size:20px;font-weight:700;line-height:1.2;}
+  .pfc-card-val{font-size:22px;font-weight:700;line-height:1.2;}
   .pfc-card-val-p{color:var(--col-p);}
   .pfc-card-val-f{color:var(--col-f);}
   .pfc-card-val-c{color:var(--col-c);}
